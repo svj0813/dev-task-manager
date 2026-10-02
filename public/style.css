@@ -27,13 +27,25 @@ h1 {
     color: #333;
 }
 
+h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #444;
+}
+
 form {
     display: flex;
+    flex-direction: column;
     gap: 10px;
     margin-bottom: 20px;
 }
 
-input[type="text"] {
+#task-form {
+    flex-direction: row;
+}
+
+input[type="text"],
+input[type="password"] {
     flex: 1;
     padding: 10px;
     border: 1px solid #ccc;
@@ -53,6 +65,30 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+
+#auth-toggle-text {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+}
+
+#auth-toggle-btn {
+    color: #007bff;
+    text-decoration: none;
+}
+
+#auth-toggle-btn:hover {
+    text-decoration: underline;
+}
+
+.user-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
 }
 
 ul {
