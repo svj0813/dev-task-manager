@@ -8,6 +8,7 @@ const PORT = 5000;
 
 // Middleware
 app.use(express.json());
+app.use(express.static('public')); // <--- INSERTED HERE
 
 // DB Connection
 mongoose.connect(process.env.MONGO_URI)
