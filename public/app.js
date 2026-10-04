@@ -113,11 +113,13 @@ function renderTask(task) {
     const span = document.createElement('span');
     span.classList.add('task-title');
     span.textContent = task.title;
+    // Clicking the text toggles the completion status
     span.onclick = () => toggleTask(task._id, !task.completed);
 
     const deleteBtn = document.createElement('button');
     deleteBtn.classList.add('delete-btn');
     deleteBtn.textContent = 'Delete';
+    // Clicking the button deletes the task
     deleteBtn.onclick = () => deleteTask(task._id);
 
     li.appendChild(span);
@@ -140,7 +142,11 @@ taskForm.addEventListener('submit', async (e) => {
 
         if (res.ok) {
             taskInput.value = '';
-            fetchTasks();
+            fetchTasks(); // Reload tasks immediately without refreshing page
+        } else {
+            // NEW: This will pop up an alert showing the exact database error!
+            const errorData = await res.json();
+            alert("Backend Error: " + JSON.stringify(errorData));
         }
     } catch (err) {
         console.error('Error adding task:', err);
@@ -170,7 +176,7 @@ async function deleteTask(id) {
             headers: getAuthHeaders()
         });
 
-        if (res.ok) fetchTasks();
+        if (res.ok) fetchTasks(); 
     } catch (err) {
         console.error('Error deleting task:', err);
     }
