@@ -116,13 +116,21 @@ function renderTask(task) {
     // Clicking the text toggles the completion status
     span.onclick = () => toggleTask(task._id, !task.completed);
 
+    // Create Edit Button
+    const editBtn = document.createElement('button');
+    editBtn.classList.add('edit-btn');
+    editBtn.textContent = 'Edit';
+    editBtn.style.marginRight = '10px';
+    editBtn.onclick = () => editTask(task._id, task.title);
+
+    // Create Delete Button
     const deleteBtn = document.createElement('button');
     deleteBtn.classList.add('delete-btn');
     deleteBtn.textContent = 'Delete';
-    // Clicking the button deletes the task
     deleteBtn.onclick = () => deleteTask(task._id);
 
     li.appendChild(span);
+    li.appendChild(editBtn);
     li.appendChild(deleteBtn);
     taskList.appendChild(li);
 }
@@ -144,7 +152,6 @@ taskForm.addEventListener('submit', async (e) => {
             taskInput.value = '';
             fetchTasks(); // Reload tasks immediately without refreshing page
         } else {
-            // NEW: This will pop up an alert showing the exact database error!
             const errorData = await res.json();
             alert("Backend Error: " + JSON.stringify(errorData));
         }
@@ -165,6 +172,25 @@ async function toggleTask(id, completed) {
         if (res.ok) fetchTasks();
     } catch (err) {
         console.error('Error updating task:', err);
+    }
+}
+
+// Edit task
+async function editTask(id, currentTitle) {
+    const newTitle = prompt("Edit your task:", currentTitle);
+    
+    if (!newTitle || newTitle.trim() === "") return;
+
+    try {
+        const res = await fetch(`/api/tasks/${id}`, {
+            method: 'PATCH',
+            headers: getAuthHeaders(),
+            body: JSON.stringify({ title: newTitle.trim() })
+        });
+
+        if (res.ok) fetchTasks(); 
+    } catch (err) {
+        console.error('Error editing task:', err);
     }
 }
 
